@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MUTANT CHIMPS | CONTAINMENT BREACH</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a0e14;
+            color: #00ff41;
+            font-family: 'Courier New', monospace;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    rgba(0, 255, 65, 0.03) 0px,
+                    rgba(0, 255, 65, 0.03) 1px,
+                    transparent 1px,
+                    transparent 2px
+                );
+            pointer-events: none;
+            animation: scanlines 8s linear infinite;
+            z-index: 1000;
+        }
+
+        @keyframes scanlines {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(10px); }
+        }
+
+        .glitch-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 0, 0, 0.05);
+            opacity: 0;
+            animation: glitch-overlay 3s infinite;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        @keyframes glitch-overlay {
+            0%, 90%, 100% { opacity: 0; }
+            92%, 94%, 96% { opacity: 1; }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .warning-banner {
+            background: linear-gradient(135deg, #ff0000, #cc0000);
+            border: 3px solid #ff0000;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 40px;
+            animation: pulse-warning 2s infinite;
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.5);
+        }
+
+        @keyframes pulse-warning {
+            0%, 100% { box-shadow: 0 0 30px rgba(255, 0, 0, 0.5); }
+            50% { box-shadow: 0 0 50px rgba(255, 0, 0, 0.8); }
+        }
+
+        .warning-banner h1 {
+            color: #fff;
+            font-size: 2.5em;
+            text-shadow: 0 0 10px #ff0000;
+            animation: glitch 1s infinite;
+            margin-bottom: 10px;
+        }
+
+        @keyframes glitch {
+            0%, 90%, 100% { transform: translateX(0); }
+            92% { transform: translateX(-3px); }
+            94% { transform: translateX(3px); }
+            96% { transform: translateX(-3px); }
+        }
+
+        .alert-text {
+            color: #ffff00;
+            font-size: 1.2em;
+            letter-spacing: 2px;
+        }
+
+        .header {
+            text-align: center;
+            margin: 60px 0;
+        }
+
+        .logo {
+            font-size: 4em;
+            color: #00ff41;
+            text-shadow: 0 0 20px #00ff41;
+            margin-bottom: 20px;
+            animation: flicker 3s infinite;
+        }
+
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            41.99% { opacity: 1; }
+            42% { opacity: 0.8; }
+            43% { opacity: 1; }
+            45.99% { opacity: 1; }
+            46% { opacity: 0.6; }
+            46.5% { opacity: 1; }
+        }
+
+        .tagline {
+            font-size: 1.5em;
+            color: #00ff41;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .bio-hazard {
+            text-align: center;
+            font-size: 3em;
+            color: #00ff41;
+            margin: 40px 0;
+            filter: drop-shadow(0 0 20px #00ff41);
+        }
+
+        .story-section {
+            background: rgba(0, 255, 65, 0.05);
+            border: 2px solid #00ff41;
+            padding: 40px;
+            margin: 40px 0;
+            box-shadow: 0 0 30px rgba(0, 255, 65, 0.2);
+        }
+
+        .story-section h2 {
+            color: #ff0000;
+            font-size: 2em;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px #ff0000;
+        }
+
+        .story-section p {
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: #00ff41;
+            margin-bottom: 15px;
+        }
+
+        .nft-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin: 60px 0;
+        }
+
+        .nft-card {
+            background: rgba(0, 20, 30, 0.8);
+            border: 3px solid #00ff41;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nft-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(0, 255, 65, 0.1), transparent);
+            animation: scan 3s infinite;
+        }
+
+        @keyframes scan {
+            0% { transform: translateX(-100%) translateY(-100%); }
+            100% { transform: translateX(100%) translateY(100%); }
+        }
+
+        .nft-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 40px rgba(0, 255, 65, 0.5);
+            border-color: #ff0000;
+        }
+
+        .nft-image {
+            width: 100%;
+            height: auto;
+            border: 2px solid #00ff41;
+            margin-bottom: 15px;
+            filter: saturate(1.2) contrast(1.1);
+        }
+
+        .nft-card h3 {
+            color: #00ff41;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .nft-card p {
+            color: #00ff41;
+            opacity: 0.8;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin: 60px 0;
+        }
+
+        .stat-card {
+            background: rgba(0, 255, 65, 0.1);
+            border: 2px solid #00ff41;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .stat-card .number {
+            font-size: 3em;
+            color: #ff0000;
+            text-shadow: 0 0 20px #ff0000;
+            margin-bottom: 10px;
+        }
+
+        .stat-card .label {
+            font-size: 1.2em;
+            color: #00ff41;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .utilities {
+            background: rgba(255, 0, 0, 0.1);
+            border: 3px solid #ff0000;
+            padding: 40px;
+            margin: 60px 0;
+        }
+
+        .utilities h2 {
+            color: #ff0000;
+            font-size: 2.5em;
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 0 0 15px #ff0000;
+        }
+
+        .utility-list {
+            list-style: none;
+            font-size: 1.2em;
+        }
+
+        .utility-list li {
+            padding: 15px;
+            margin: 10px 0;
+            background: rgba(0, 255, 65, 0.05);
+            border-left: 4px solid #00ff41;
+            transition: all 0.3s;
+        }
+
+        .utility-list li:hover {
+            background: rgba(0, 255, 65, 0.1);
+            border-left-color: #ff0000;
+            transform: translateX(10px);
+        }
+
+        .utility-list li::before {
+            content: '> ';
+            color: #ff0000;
+        }
+
+        .countdown {
+            text-align: center;
+            margin: 60px 0;
+            padding: 40px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 3px solid #00ff41;
+        }
+
+        .countdown h2 {
+            color: #ff0000;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        .countdown .year {
+            font-size: 5em;
+            color: #00ff41;
+            text-shadow: 0 0 30px #00ff41;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .footer {
+            text-align: center;
+            padding: 40px;
+            border-top: 2px solid #00ff41;
+            margin-top: 60px;
+        }
+
+        .footer a {
+            color: #00ff41;
+            text-decoration: none;
+            margin: 0 15px;
+            transition: all 0.3s;
+        }
+
+        .footer a:hover {
+            color: #ff0000;
+            text-shadow: 0 0 10px #ff0000;
+        }
+
+        @media (max-width: 768px) {
+            .logo { font-size: 2.5em; }
+            .tagline { font-size: 1em; }
+            .warning-banner h1 { font-size: 1.8em; }
+            .nft-gallery { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="glitch-overlay"></div>
+    
+    <div class="container">
+        <div class="warning-banner">
+            <h1>⚠️ CONTAINMENT BREACH DETECTED ⚠️</h1>
+            <p class="alert-text">UNAUTHORIZED DNA MUTATION IN PROGRESS</p>
+        </div>
+
+        <div class="header">
+            <div class="logo">MUTANT CHIMPS</div>
+            <div class="tagline">The Mutation Has Escaped</div>
+        </div>
+
+        <div class="bio-hazard">☣️</div>
+
+        <div class="story-section">
+            <h2>// INCIDENT REPORT #2026</h2>
+            <p>> DNA leaks from Cronos Labs have merged with primal code from CroTrade...</p>
+            <p>> 1,000 Mutant Chimps spotted across the blockchain</p>
+            <p>> Containment: IMPOSSIBLE</p>
+            <p>> Mutation level: CRITICAL</p>
+            <p>> Each specimen contains unique genetic markers and unlocks classified utilities on the CroTrade platform</p>
+            <p>> WARNING: Exposure to these NFTs may result in enhanced trading capabilities</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="number">1,000</div>
+                <div class="label">Mutant Supply</div>
+            </div>
+            <div class="stat-card">
+                <div class="number">2026</div>
+                <div class="label">Launch Year</div>
+            </div>
+            <div class="stat-card">
+                <div class="number">100%</div>
+                <div class="label">Mutated DNA</div>
+            </div>
+        </div>
+
+        <h2 style="text-align: center; color: #00ff41; font-size: 2.5em; margin: 60px 0 40px 0; text-shadow: 0 0 20px #00ff41;">SPECIMEN PREVIEWS</h2>
+
+        <div class="nft-gallery">
+            <div class="nft-card">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Crect fill='%230a0e14' width='400' height='400'/%3E%3Ctext x='50%25' y='50%25' font-size='20' fill='%2300ff41' text-anchor='middle' dy='.3em' font-family='Courier New'%3EINFERNO KING%3C/text%3E%3C/svg%3E" alt="Mutant Chimp #1" class="nft-image">
+                <h3>SPECIMEN #001</h3>
+                <p>INFERNO KING</p>
+                <p style="color: #ff0000;">Mutation Type: PYRO-GENETIC</p>
+            </div>
+
+            <div class="nft-card">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Crect fill='%230a0e14' width='400' height='400'/%3E%3Ctext x='50%25' y='50%25' font-size='20' fill='%2300ff41' text-anchor='middle' dy='.3em' font-family='Courier New'%3EBLAST MINER%3C/text%3E%3C/svg%3E" alt="Mutant Chimp #2" class="nft-image">
+                <h3>SPECIMEN #002</h3>
+                <p>BLAST MINER</p>
+                <p style="color: #ff6600;">Mutation Type: EXPLOSIVE-DNA</p>
+            </div>
+        </div>
+
+        <div class="utilities">
+            <h2>🔓 UNLOCKED UTILITIES</h2>
+            <ul class="utility-list">
+                <li>PRIORITY ACCESS to exclusive CroTrade features</li>
+                <li>ENHANCED TRADING capabilities on the platform</li>
+                <li>ZERO FEES on select trading pairs</li>
+                <li>EARLY ACCESS to new token launches</li>
+                <li>VIP COMMUNITY access and governance rights</li>
+                <li>AIRDROPS of future CroTrade ecosystem tokens</li>
+                <li>SPECIAL REWARDS and staking multipliers</li>
+                <li>EXCLUSIVE NFT breeding mechanics (Future)</li>
+            </ul>
+        </div>
+
+        <div class="countdown">
+            <h2>ESTIMATED OUTBREAK</h2>
+            <div class="year">2026</div>
+            <p style="color: #00ff41; font-size: 1.2em; margin-top: 20px;">PREPARE FOR MUTATION</p>
+        </div>
+
+        <div class="story-section">
+            <h2>// ABOUT THE EXPERIMENT</h2>
+            <p>> In the depths of Cronos Labs, a classified experiment merged primal DNA with advanced blockchain technology</p>
+            <p>> The result: 1,000 unique Mutant Chimps, each with distinct mutations and abilities</p>
+            <p>> These specimens have escaped containment and are spreading across the blockchain</p>
+            <p>> Each Mutant Chimp holder gains access to exclusive utilities within the CroTrade ecosystem</p>
+            <p>> The mutation is permanent. The chimps are evolving. Are you ready?</p>
+        </div>
+
+        <div class="footer">
+            <p style="margin-bottom: 20px; color: #ff0000; font-size: 1.3em;">⚠️ PROCEED WITH CAUTION ⚠️</p>
+            <a href="https://cro-trade.pages.dev/" target="_blank">← RETURN TO CROTRADE</a>
+            <a href="#">TWITTER/X</a>
+            <a href="#">DISCORD</a>
+            <a href="#">OPENSEA</a>
+            <p style="margin-top: 30px; opacity: 0.6;">© 2025-2026 CroTrade x Cronos Labs | Mutant Chimps Collection</p>
+            <p style="margin-top: 10px; opacity: 0.4; font-size: 0.9em;">EXPERIMENT STATUS: ACTIVE | CONTAINMENT: FAILED</p>
+        </div>
+    </div>
+</body>
+</html>
